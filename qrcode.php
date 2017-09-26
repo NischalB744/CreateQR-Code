@@ -1,25 +1,26 @@
 <?php
 
-	use Endroid\QrCode\QrCode;
+            include('phpqrcode/qrlib.php');
+            
+                
+                $qrData = $_GET['item1'].",".$_GET['lot1'].",".$_GET['exp1'].",".$_GET['batch1'];
+                QRcode::png($qrData);    
+                      
+            
+/*
+            $qr = new QrCode('this is awesome');
 
-	require_once 'vendor/autoload.php';
+            $qr->setSize(100);
 
-	$itemNum = $_POST['itemNumber'];
-	$lotNum = $_POST['lotNumber'];
-	$expDate = $_POST['expiryDate'];
-	$batchNum = $_POST['batchNumber'];
-
-
-    $qrData = $itemNum.",".$lotNum.",".$expDate.",".$batchNum;
-     
-    $qr = new QrCode($qrData);
-
-	$qr->setSize(100);
-
-    $qr->setPadding(10);
-
-    $qr->render();
+            $image = $qr->writeString();
 
 
 
-?>
+            //header('Content-Type: '.$qr->getContentType());
+
+            echo $image;
+
+*/
+
+        ?>
+        

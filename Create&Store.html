@@ -3,11 +3,24 @@
 
     <head>
         <title> Create and Store the QR Code </title>
+
+        <script type = "text/javascript">
+             function displayImage()
+                {
+                    //var myQRCode = document.createElement("img");
+                    //myQRCode.setAttribute("src",encodeValue);
+                    //document.getElementById("QrDiv").appendChild(myQRCode);
+                    alert("hey");
+                    
+                }
+
+        </script>
+
     </head>
 
     <body>
     
-        <form action="createQR.php" method="post">
+        <form action="" method="post">
             
             <div id = "item_num">
                 <label for  = "itemNumber">ITEM NUMBER: </label>
@@ -34,6 +47,18 @@
             </div>
         
         </form>
+
+        <div id = "QrDiv">
+            <p>HERE IS THE IMAGE:</p>
+            <img src = "qrcode.php">
+        </div>
         
+        
+        
+        
+            
+        
+        
+
     </body>
 </html>

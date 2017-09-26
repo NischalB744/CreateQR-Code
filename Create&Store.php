@@ -3,14 +3,19 @@
 
     <head>
         <title> Create and Store the QR Code </title>
-
+        
+        <script type = "text/javascript" src = "jquery.js"></script>
         <script type = "text/javascript">
-             function displayImage()
+             function submitForm()
                 {
-                    //var myQRCode = document.createElement("img");
-                    //myQRCode.setAttribute("src",encodeValue);
-                    //document.getElementById("QrDiv").appendChild(myQRCode);
-                    alert("hey");
+                    
+                    var itemValue = document.getElementById("itemNumber").value;
+                    var lotValue = document.getElementById("lotNumber").value;
+                    var expValue = document.getElementById("expiryDate").value;
+                    var batchValue = document.getElementById("batchNumber").value;
+                    
+                    var finalString = itemValue + "," +lotValue + "," + expValue + "," + batchValue;
+                    
                     
                 }
 
@@ -19,10 +24,8 @@
     </head>
 
     <body>
-    
-        <form action="qrcode.php" method="post">
-            
-            <div id = "item_num">
+        <form action = "" method="post">
+         <div id = "item_num">
                 <label for  = "itemNumber">ITEM NUMBER: </label>
                 <input type = "text" id = "itemNumber" name  = "itemNumber">
             </div>
@@ -43,14 +46,35 @@
             </div>
             
             <div id = "submit_btn">
-                <button type="submit">CREATE &amp; STORE</button>
+                <button type="submit" onclick = "submitForm()">CREATE &amp; STORE</button>
             </div>
-        
         </form>
-
-        <div id = "QrDiv">
-            <p>HERE IS THE IMAGE:</p>
-        </div>
+        <?php
+            
+            
+            $item = $_POST['itemNumber'];
+            $lot = $_POST['lotNumber'];
+            $exp = $_POST['expiryDate'];
+            $batch = $_POST['batchNumber'];
+            
+            
+            
+            
+            echo '<img src="qrCode.php?item1='.$item.'&lot1='.$lot.'&exp1='.$exp.'&batch1='.$batch.'"/>';
+            
+        ?>
+        
+        <p>Item Number: </p>
+        <p>Lot Number: </p>
+        <p>Expiry Date: </p>
+        <p>Batch Number:</p>
+        
+        
+        
+        
+            
+        
+        
 
     </body>
 </html>
