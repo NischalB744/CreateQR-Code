@@ -46,6 +46,21 @@
                 document.getElementById("feedbackContainer").appendChild(successDiv);
                
             }
+            function clearFields()
+            {
+                document.getElementById("itemNumber").value = "";
+                document.getElementById("lotNumber").value = "";
+                document.getElementById("expiryDate").value = "";
+                document.getElementById("batchNumber").value = "";
+                
+            }
+            
+            function printQR()
+            {
+                        window.print();
+                
+            }
+           
         
         </script>
         
@@ -63,42 +78,56 @@
           
         </nav>
         
-        
+        <div class = "container example-screen">
             <form action = "" method="post">
-             <div id = "item_num">
-                    <label for  = "itemNumber">ITEM NUMBER: </label>
-                    <input type = "text" id = "itemNumber" name  = "itemNumber" required = "required">
+             <div class = "form-group row myFields" id = "item_num">
+                    <label for  = "itemNumber" class="col-sm-2 col-form-label myLabels">ITEM #: </label>
+                    <div class = "col-10">
+                        <input type = "text" class = "form-control" id = "itemNumber" name  = "itemNumber" required = "required">
+                    </div>
+            </div>
+
+                <div class = "form-group row myFields" id = "lot_num">
+                    <label for  = "lotNumber" class="col-sm-2 col-form-label myLabels">LOT #: </label>
+                    <div class = "col-10">
+                        <input type = "text" class = "form-control" id = "lotNumber" name = "lotNumber" required = "required">
+                    </div>
                 </div>
 
-                <div id = "lot_num">
-                    <label for  = "lotNumber">LOT NUMBER: </label>
-                    <input type = "text" id = "lotNumber" name = "lotNumber" required = "required">
+                <div class = "form-group row myFields" id = "exp_date">
+                    <label for  = "expiryDate" class="col-sm-2 col-form-label myLabels">EXPIRY DATE: </label>
+                    <div class = "col-10">
+                        <input type = "text" class = "form-control" id = "expiryDate" name = "expiryDate" required = "required">
+                    </div>
                 </div>
 
-                <div id = "exp_date">
-                    <label for  = "expiryDate">EXPIRATION DATE: </label>
-                    <input type = "text" id = "expiryDate" name = "expiryDate" required = "required">
+                <div class = "form-group row myFields" id = "batch_num">
+                    <label for  = "batchNumber" class="col-sm-2 col-form-label myLabels">BATCH #: </label>
+                    <div class = "col-10">
+                        <input type = "text" class = "form-control"id = "batchNumber" name = "batchNumber" >
+                    </div>
                 </div>
-
-                <div id = "batch_num">
-                    <label for  = "batchNumber">BATCH NUMBER: </label>
-                    <input type = "text" id = "batchNumber" name = "batchNumber" >
-                </div>
-
-                <div id = "submit_btn">
-                    <input type="submit" value="CREATE &amp; STORE">
+                
+                <div class = "container" id = "buttonContainer">
+                    <button type = "submit" class="btn btn-success example-screen myBtn">CREATE &amp; STORE</button>
                 </div>
             </form>
+        </div>
         
-        
-        <div id = "infoLabel">
+        <div id = "infoLabel" class = "example-screen">
             
         </div>
         
-        <div id = "feedbackContainer">
+        <div id = "feedbackContainer"  class = "example-screen">
             <div id ="databaseLabel">
                 
             </div>
+        </div>
+        
+        <div class = "container example-screen" id = "buttonContainer">
+                    <button class="btn btn-primary example-screen myBtn" onclick="printQR();">PRINT</button>
+                    <button type = "submit" class="btn btn-warning example-screen myBtn">SEARCH</button>
+                    <button class="btn btn-primary example-screen myBtn" onclick="clearFields();">CLEAR</button>
         </div>
         
         <?php
@@ -165,9 +194,14 @@
         
         ?>
         
-        
-        
-        
-
     </body>
+    
+     <footer>
+         <div id = "exitContainer">
+                   <button type = "submit" class="btn btn-danger example-screen myBtn" onclick="self.close()">EXIT</button>
+        </div>  
+        <nav class="navbar navbar-expand-lg navbar-light">
+            <h1 id = "pageHeading" class = "display-3 col col-sm-12"></h1>
+        </nav>
+    </footer>
 </html>

@@ -99,8 +99,8 @@ html, body {
 
 #buttonContainer
 {
-    margin-left:40%;
-    padding:0px 50px 0px 120px;
+    margin-left:25%;
+    padding:0px 50px 0px 20px;
     
 }
 
@@ -108,11 +108,27 @@ html, body {
 {
     font-size: 24px;
     margin:12px;
-    padding:20px 42px;
+    padding:20px 30px;
 }
 
 #feedbackContainer
 {
     margin-left:25%;
     padding:20px 50px 20px 120px;
+}
+
+.myFields
+{
+    padding-top:20px;
+}
+
+.myLabels
+{
+    font-size: 20px;
+    font-weight:bold;
+}
+#exitContainer
+{
+    position: fixed;
+    float:left;
 }
