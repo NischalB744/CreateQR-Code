@@ -21,20 +21,19 @@
 
     .example-print 
     {
-
+        font-size: 36px !important;
         display: block;
+        border: solid white !important;
+        position: fixed !important;
+        top:150px;
+        right:65%;
+        transform: scale(1.5);
 
-        position: absolute;
-
-        left:40%;
-        
-        font-size: 28px;
 
     }
 }
  @page 
     {
-        padding:10px;
         size: auto;   /* auto is the initial value */
         margin: 5mm;  /* this affects the margin in the printer settings */
     }
@@ -97,7 +96,7 @@ html, body {
     bottom:10px;
 }
 
-#buttonContainer
+#buttonContainer,myExitBtnContainer
 {
     margin-left:25%;
     padding:0px 50px 0px 20px;
@@ -113,7 +112,8 @@ html, body {
 
 #feedbackContainer
 {
-    margin-left:25%;
+    position:absolute;
+    bottom:20px;
     padding:20px 50px 20px 120px;
 }
 
@@ -124,11 +124,55 @@ html, body {
 
 .myLabels
 {
-    font-size: 20px;
-    font-weight:bold;
+    font-size: 24px;
 }
 #exitContainer
 {
     position: fixed;
     float:left;
+}
+
+#formColumn
+{
+    border: solid grey 1px;
+    margin-left:70px;
+    border-radius: 25px;
+}
+
+#infoColumn
+{
+    
+    border: solid grey 1px;
+    border-radius: 25px;
+    font-size: 18px;
+    
+}
+
+#mainColumns
+{
+    padding:50px;
+}
+
+#myExitBtn
+{
+    position: absolute;
+    bottom:0px;
+    font-size: 24px;
+    margin:12px;
+    padding:20px 30px;
+}
+#myExitBtnContainer
+{
+    margin:100px;
+}
+
+#qrContainer
+{
+    margin-left: 35%;
+}
+
+#qrInfoDiv
+{
+    padding-left:20px;
+    font-size: 22px;
 }

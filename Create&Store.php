@@ -60,6 +60,7 @@
                         window.print();
                 
             }
+            
            
         
         </script>
@@ -77,122 +78,124 @@
                 <h1 id = "pageHeading" class = "display-3 col col-sm-12">AOSS QR Storage System</h1>
           
         </nav>
-        
-        <div class = "container example-screen">
-            <form action = "" method="post">
-             <div class = "form-group row myFields" id = "item_num">
-                    <label for  = "itemNumber" class="col-sm-2 col-form-label myLabels">ITEM #: </label>
-                    <div class = "col-10">
-                        <input type = "text" class = "form-control" id = "itemNumber" name  = "itemNumber" required = "required">
+        <div class = "row" id = "mainColumns">
+            <div class = "col-6 container example-screen" id = "formColumn">
+                <form action = "" method="post">
+                 <div class = "form-group row myFields" id = "item_num">
+                        <label for  = "itemNumber" class="col-sm-2 col-form-label myLabels">ITEM #: </label>
+                        <div class = "col-10">
+                            <input type = "text" class = "form-control" id = "itemNumber" name  = "itemNumber" required = "required">
+                        </div>
+                </div>
+
+                    <div class = "form-group row myFields" id = "lot_num">
+                        <label for  = "lotNumber" class="col-sm-2 col-form-label myLabels">LOT #: </label>
+                        <div class = "col-10">
+                            <input type = "text" class = "form-control" id = "lotNumber" name = "lotNumber" required = "required">
+                        </div>
                     </div>
+
+                    <div class = "form-group row myFields" id = "exp_date">
+                        <label for  = "expiryDate" class="col-sm-2 col-form-label myLabels">EXPIRY DATE: </label>
+                        <div class = "col-10">
+                            <input type = "text" class = "form-control" id = "expiryDate" name = "expiryDate" required = "required">
+                        </div>
+                    </div>
+
+                    <div class = "form-group row myFields" id = "batch_num">
+                        <label for  = "batchNumber" class="col-sm-2 col-form-label myLabels">BATCH #: </label>
+                        <div class = "col-10">
+                            <input type = "text" class = "form-control"id = "batchNumber" name = "batchNumber" >
+                        </div>
+                    </div>
+
+                    <div class = "container" id = "buttonContainer">
+                        <button type = "submit" class="btn btn-success example-screen myBtn">CREATE &amp; STORE</button>
+                        <button type = "submit" class="btn btn-warning example-screen myBtn">SEARCH</button>
+                        <button class="btn btn-primary example-screen myBtn" onclick="clearFields();">CLEAR</button>
+                    </div>
+                </form>
             </div>
 
-                <div class = "form-group row myFields" id = "lot_num">
-                    <label for  = "lotNumber" class="col-sm-2 col-form-label myLabels">LOT #: </label>
-                    <div class = "col-10">
-                        <input type = "text" class = "form-control" id = "lotNumber" name = "lotNumber" required = "required">
-                    </div>
-                </div>
 
-                <div class = "form-group row myFields" id = "exp_date">
-                    <label for  = "expiryDate" class="col-sm-2 col-form-label myLabels">EXPIRY DATE: </label>
-                    <div class = "col-10">
-                        <input type = "text" class = "form-control" id = "expiryDate" name = "expiryDate" required = "required">
-                    </div>
-                </div>
 
-                <div class = "form-group row myFields" id = "batch_num">
-                    <label for  = "batchNumber" class="col-sm-2 col-form-label myLabels">BATCH #: </label>
-                    <div class = "col-10">
-                        <input type = "text" class = "form-control"id = "batchNumber" name = "batchNumber" >
-                    </div>
-                </div>
+            <div class = " col-5 container example-print" id = "infoColumn">
+                <div class = "container" id = "qrContainer">
+                    <?php
+
+                        error_reporting(0);
+
+                        $item = $_POST['itemNumber'];
+                        $lot = $_POST['lotNumber'];
+                        $exp = $_POST['expiryDate'];
+                        $batch = $_POST['batchNumber'];
+                        $barcode = $item.",".$lot.",".$exp.",".$batch;
+
+                        if(($item == '')||($lot == '')||($exp == ''))
+                        {
+                            // Do Nothing (Is taken care by the HTML Itself)
+                        }
+                        else
+                        {
+                            $mysqli = new mysqli('127.0.0.1','root','','test');
+                            if ($mysqli->connect_error)
+                            {
+                                die('Could not connect to database!');
+                            }   
+
+
+
+                            $statement = $mysqli->prepare("INSERT INTO barcodetest VALUES (?, ?, ?, ?, ?)");
+
+                            $statement->bind_param('sssss',$barcode,$item,$lot,$exp,$batch);
+
+                            $success = $statement->execute();
+
+
+
+                            if($success) 
+                            {
+
+                                echo '<script>';
+                                echo 'printLabelSuccess()';
+                                echo '</script>';
+                                echo '<img width="150" height = "150" src="qrCode.php?item1='.$item.'&lot1='.$lot.'&exp1='.$exp.'&batch1='.$batch.'"/>'; 
+                                echo "</br>";
+                                echo "</br>";
+                                echo "<div id = 'qrInfoDiv'>";
+                                echo "Item #: ".$item."</br>";
+                                echo "Lot #: ".$lot."</br>";
+                                echo "Expiry Date: ".$exp."</br>";
+                                
+                                if(!($batch == ''))
+                                {
+                                    echo "Batch #: ".$batch."</br>";
+                                }
+                                echo "</div>";
+                                echo "<input type='submit' class = 'btn btn-primary example-screen' id = 'myExitBtn' name='submit' value='PRINT' onclick = 'window.print()'>";
+                                
+
+                            }
+                            else
+                            {
+                                echo '<script>';
+                                echo 'printLabelFail()';
+                                echo '</script>';
+                            }
+
+                        }
+
+                    ?>
                 
-                <div class = "container" id = "buttonContainer">
-                    <button type = "submit" class="btn btn-success example-screen myBtn">CREATE &amp; STORE</button>
                 </div>
-            </form>
+            </div>
         </div>
-        
-        <div id = "infoLabel" class = "example-screen">
-            
-        </div>
-        
         <div id = "feedbackContainer"  class = "example-screen">
             <div id ="databaseLabel">
                 
             </div>
         </div>
         
-        <div class = "container example-screen" id = "buttonContainer">
-                    <button class="btn btn-primary example-screen myBtn" onclick="printQR();">PRINT</button>
-                    <button type = "submit" class="btn btn-warning example-screen myBtn">SEARCH</button>
-                    <button class="btn btn-primary example-screen myBtn" onclick="clearFields();">CLEAR</button>
-        </div>
-        
-        <?php
-            
-            error_reporting(0);
-            
-            $item = $_POST['itemNumber'];
-            $lot = $_POST['lotNumber'];
-            $exp = $_POST['expiryDate'];
-            $batch = $_POST['batchNumber'];
-            $barcode = $item.",".$lot.",".$exp.",".$batch;
-        
-            if(($item == '')||($lot == '')||($exp == ''))
-            {
-                // Do Nothing (Is taken care by the HTML Itself)
-            }
-            else
-            {
-                 $mysqli = new mysqli('127.0.0.1','root','','test');
-            if ($mysqli->connect_error){
-                die('Could not connect to database!');
-            }
-
-
-
-            $statement = $mysqli->prepare("INSERT INTO barcodetest VALUES (?, ?, ?, ?, ?)");
-
-            $statement->bind_param('sssss',$barcode,$item,$lot,$exp,$batch);
-
-            $success = $statement->execute();
-
-
-
-            if($success) 
-            {
-
-                echo '<script>';
-                echo 'printLabelSuccess()';
-                echo '</script>';
-                echo '<img width="150" height = "150" src="qrCode.php?item1='.$item.'&lot1='.$lot.'&exp1='.$exp.'&batch1='.$batch.'"/>'; 
-                echo "</br>";
-                echo "</br>";
-                echo "Item #: ".$item."</br>";
-                echo "Lot #: ".$lot."</br>";
-                echo "Expiry Date: ".$exp."</br>";
-
-                if(!($batch == ''))
-                {
-                    echo "Batch #: ".$batch."</br>";
-                }
-            }
-            else
-            {
-                echo '<script>';
-                echo 'printLabelFail()';
-                echo '</script>';
-            }
-                
-            }
-        
-          
-        
-        
-        
-        ?>
         
     </body>
     
