@@ -80,6 +80,7 @@ html, body {
 
 #myContainer
 {
+    
     padding:120px 50px 0px 120px;
 }
 
@@ -112,8 +113,10 @@ html, body {
 
 #feedbackContainer
 {
-    position:absolute;
-    bottom:20px;
+    position: absolute;
+    bottom:25%;
+    font-size: 32px;
+    left:28%;
     padding:20px 50px 20px 120px;
 }
 
@@ -129,6 +132,8 @@ html, body {
 #exitContainer
 {
     position: fixed;
+    bottom:8px;
+    z-index: 1;
     float:left;
 }
 

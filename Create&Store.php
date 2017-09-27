@@ -18,11 +18,34 @@
         <script type="text/javascript">
         
         
+            function printSearchSuccess()
+            {
+                document.getElementById("databaseLabel").innerHTML = "";
+                var successDiv = document.createElement("div");
+                var successMsg = document.createTextNode("The item was found in the database.");
+                successDiv.appendChild(successMsg);
+                successDiv.setAttribute("class","alert alert-success");
+                successDiv.setAttribute("role","alert");
+                document.getElementById("feedbackContainer").appendChild(successDiv);
+            }
+            
+            
+            function printSearchFail()
+            {
+                
+                document.getElementById("databaseLabel").innerHTML = "";
+                var successDiv = document.createElement("div");
+                var successMsg = document.createTextNode("No Such Item Exists on the database.");
+                successDiv.appendChild(successMsg);
+                successDiv.setAttribute("class","alert alert-danger");
+                successDiv.setAttribute("role","alert");
+                document.getElementById("feedbackContainer").appendChild(successDiv);
+               
+            }
+            
             function printLabelSuccess()
             {
                 document.getElementById("databaseLabel").innerHTML = "";
-                
-                
                 var successDiv = document.createElement("div");
                 var successMsg = document.createTextNode("The item was successfully stored in the database.");
                 successDiv.appendChild(successMsg);
@@ -36,16 +59,15 @@
             {
                 
                 document.getElementById("databaseLabel").innerHTML = "";
-                
                 var successDiv = document.createElement("div");
-                var successMsg = document.createTextNode("Error entering the item in the database. Could be duplicate entry or an invalid entry. Please try again or check the database.");
+                var successMsg = document.createTextNode("Error entering the item in the database.");
                 successDiv.appendChild(successMsg);
                 successDiv.setAttribute("class","alert alert-danger");
                 successDiv.setAttribute("role","alert");
-                
                 document.getElementById("feedbackContainer").appendChild(successDiv);
                
             }
+            
             function clearFields()
             {
                 document.getElementById("itemNumber").value = "";
@@ -57,7 +79,7 @@
             
             function printQR()
             {
-                        window.print();
+                window.print();
                 
             }
             
@@ -78,6 +100,10 @@
                 <h1 id = "pageHeading" class = "display-3 col col-sm-12">AOSS QR Storage System</h1>
           
         </nav>
+        <div id = "feedbackContainer"  class = "example-screen">
+                <div id ="databaseLabel">
+                </div>
+       </div>
         <div class = "row" id = "mainColumns">
             <div class = "col-6 container example-screen" id = "formColumn">
                 <form action = "" method="post">
@@ -110,19 +136,21 @@
                     </div>
 
                     <div class = "container" id = "buttonContainer">
-                        <button type = "submit" class="btn btn-success example-screen myBtn">CREATE &amp; STORE</button>
-                        <button type = "submit" class="btn btn-warning example-screen myBtn">SEARCH</button>
+                        <button type = "submit" name = "createBtn" class="btn btn-success example-screen myBtn">CREATE &amp; STORE</button>
+                        <button type = "submit" name = "searchBtn" class="btn btn-warning example-screen myBtn">SEARCH</button>
                         <button class="btn btn-primary example-screen myBtn" onclick="clearFields();">CLEAR</button>
                     </div>
                 </form>
             </div>
-
+            
+            
 
 
             <div class = " col-5 container example-print" id = "infoColumn">
                 <div class = "container" id = "qrContainer">
                     <?php
-
+                        
+                        
                         error_reporting(0);
 
                         $item = $_POST['itemNumber'];
@@ -130,7 +158,16 @@
                         $exp = $_POST['expiryDate'];
                         $batch = $_POST['batchNumber'];
                         $barcode = $item.",".$lot.",".$exp.",".$batch;
-
+                    
+                    /*
+                    //----------------------------------------------------------------------------------------------------------------------------------------
+                    //              SEARCH FUNCTION
+                    //----------------------------------------------------------------------------------------------------------------------------------------
+                    */
+                        
+                    if(isset($_POST['createBtn']))
+                    {
+                    
                         if(($item == '')||($lot == '')||($exp == ''))
                         {
                             // Do Nothing (Is taken care by the HTML Itself)
@@ -184,25 +221,87 @@
                             }
 
                         }
+                    }
+                    
+                    /*
+                    //----------------------------------------------------------------------------------------------------------------------------------------
+                    //              SEARCH FUNCTION
+                    //----------------------------------------------------------------------------------------------------------------------------------------
+                    */
+                    
+                    else if(isset($_POST['searchBtn']))
+                    {
+                        if(($item == '')||($lot == '')||($exp == ''))
+                        {
+                            // Do Nothing (Is taken care by the HTML Itself)
+                        }
+                        else
+                        {
+                            $mysqli = new mysqli('127.0.0.1','root','','test');
+                            if ($mysqli->connect_error)
+                            {
+                                die('Could not connect to database!');
+                            }   
+
+
+
+                            $statement = $mysqli->prepare("SELECT itemno,lotno,expdate,batchno FROM barcodetest WHERE barcode=?");
+
+                            $statement->bind_param('s',$barcode);
+
+                            $success = $statement->execute();
+
+                            $row = $statement->fetch();
+                            
+
+                            if($row) 
+                            {
+
+                                echo '<script>';
+                                echo 'printSearchSuccess()';
+                                echo '</script>';
+                                echo '<img width="150" height = "150" src="qrCode.php?item1='.$item.'&lot1='.$lot.'&exp1='.$exp.'&batch1='.$batch.'"/>'; 
+                                echo "</br>";
+                                echo "</br>";
+                                echo "<div id = 'qrInfoDiv'>";
+                                echo "Item #: ".$item."</br>";
+                                echo "Lot #: ".$lot."</br>";
+                                echo "Expiry Date: ".$exp."</br>";
+                                
+                                if(!($batch == ''))
+                                {
+                                    echo "Batch #: ".$batch."</br>";
+                                }
+                                echo "</div>";
+                                echo "<input type='submit' class = 'btn btn-primary example-screen' id = 'myExitBtn' name='submit' value='PRINT' onclick = 'window.print()'>";
+                                
+
+                            }
+                            else
+                            {
+                                echo '<script>';
+                                echo 'printSearchFail()';
+                                echo '</script>';
+                            }
+
+                        }
+                    }
 
                     ?>
                 
                 </div>
             </div>
+            
         </div>
-        <div id = "feedbackContainer"  class = "example-screen">
-            <div id ="databaseLabel">
-                
-            </div>
-        </div>
+        <div id = "exitContainer">
+                   <button type = "submit" class="btn btn-danger example-screen myBtn" onclick="self.close()">EXIT</button>
+        </div> 
         
         
     </body>
     
      <footer>
-         <div id = "exitContainer">
-                   <button type = "submit" class="btn btn-danger example-screen myBtn" onclick="self.close()">EXIT</button>
-        </div>  
+         
         <nav class="navbar navbar-expand-lg navbar-light">
             <h1 id = "pageHeading" class = "display-3 col col-sm-12"></h1>
         </nav>
