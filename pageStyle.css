@@ -49,21 +49,103 @@
     font-size: 58px;
     color: white;
 }
-
-
-@media screen and (max-width: 600px) {
-    #pageHeading
-    {
-        font-size: 36px;
-    }
+@media screen and (max-width: 1920px) {
+ 	.myLabels
+	{
+	    font: normal 24px courier !important;
+	}
+	#pageHeading
+	{
+		font-size:42px;
+	}
+	.myBtn,#myExitBtn
+	{
+		font: normal 24px courier !important;
+	}
+	
 }
 
-@media screen and (max-width: 400px) {
-    #pageHeading
-    {
-        font-size: 28px;
-    }
+@media screen and (max-width: 1600px) {
+ 	.myLabels
+	{
+	    font: normal 20px courier !important;
+	}
+	#pageHeading
+	{
+		font-size:42px;
+	}
+	.myBtn
+	{
+		font: normal 20px courier !important;
+	}
 }
+
+@media screen and (max-width: 1024px) { 
+
+	.myLabels
+	{
+	    font: normal 16px courier !important;
+	}
+	
+	#pageHeading
+	{
+		font-size:22px;
+	}
+	.myBtn,#myExitBtn
+	{
+		font: normal 16px courier !important;
+	}
+}
+
+@media screen and (max-width: 950px) {
+ 	.myLabels
+	{
+	    font: normal 12px courier !important;
+	}
+	#pageHeading
+	{
+		font-size:28px;
+	}
+	.myBtn,#myExitBtn
+	{
+		font: normal 12px courier !important;
+	}
+}
+
+
+@media screen and (max-width: 650px) {
+	.myLabels
+	{
+	    font: normal 12px courier !important;
+	}
+	#pageHeading
+	{
+		font-size:34px;
+	}
+	.myBtn,#myExitBtn
+	{
+		font: normal 12px courier !important;
+	}
+
+}
+
+@media screen and (max-width: 480px) {
+ 	.myLabels
+	{
+	    font: normal 12px courier !important;
+	}
+	#pageHeading
+	{
+		font-size:42px;
+	}
+	.myBtn,#myExitBtn
+	{
+		font: normal 12px courier !important;
+	}
+}
+
+
+
 footer {
     position: absolute;
     left: 0;
@@ -73,9 +155,8 @@ footer {
     background-color: #539AC6;
 }
 
-html, body {
+html, body, footer {
     max-width: 100%;
-    overflow-x: hidden;
 }
 
 #myContainer
@@ -90,16 +171,18 @@ html, body {
     height:160px;
 }
 
-#myLabel
+/*
+.myLabels
 {
-    font-size: 36px;
+    font-size:24px;
     padding: 5px;
     bottom:10px;
 }
+*/
 
 #buttonContainer,myExitBtnContainer
 {
-    margin-left:25%;
+    margin-left:15%;
     padding:0px 50px 0px 20px;
     
 }
@@ -107,14 +190,15 @@ html, body {
 .myBtn
 {
     font-size: 24px;
-    margin:12px;
-    padding:20px 30px;
+    margin:2px 8px 12px 8px;
+    padding:8px;
 }
 
 #feedbackContainer
 {
+    z-index:1;
     position: absolute;
-    bottom:25%;
+    bottom:-20px;
     font-size: 32px;
     left:28%;
     padding:20px 50px 20px 120px;
@@ -125,10 +209,7 @@ html, body {
     padding-top:20px;
 }
 
-.myLabels
-{
-    font-size: 24px;
-}
+
 #exitContainer
 {
     position: fixed;
@@ -163,8 +244,8 @@ html, body {
     position: absolute;
     bottom:0px;
     font-size: 24px;
-    margin:12px;
-    padding:20px 30px;
+    margin:2px 8px 12px 8px;
+    padding:8px;
 }
 #myExitBtnContainer
 {
@@ -180,4 +261,12 @@ html, body {
 {
     padding-left:20px;
     font-size: 22px;
+}
+
+#myFooter
+{
+    background: #539AC6;
+    position:fixed;
+    bottom:0;
+    width:100%;	
 }

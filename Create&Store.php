@@ -105,38 +105,38 @@
                 </div>
        </div>
         <div class = "row" id = "mainColumns">
-            <div class = "col-6 container example-screen" id = "formColumn">
+            <div class = "col-5 container example-screen" id = "formColumn">
                 <form action = "" method="post">
                  <div class = "form-group row myFields" id = "item_num">
                         <label for  = "itemNumber" class="col-sm-2 col-form-label myLabels">ITEM #: </label>
                         <div class = "col-10">
-                            <input type = "text" class = "form-control" id = "itemNumber" name  = "itemNumber" required = "required">
+                            <input type = "text" class = "form-control" id = "itemNumber" name  = "itemNumber" oninput="this.value = this.value.toUpperCase()" autofocus = "autofocus" required = "required">
                         </div>
                 </div>
 
                     <div class = "form-group row myFields" id = "lot_num">
                         <label for  = "lotNumber" class="col-sm-2 col-form-label myLabels">LOT #: </label>
                         <div class = "col-10">
-                            <input type = "text" class = "form-control" id = "lotNumber" name = "lotNumber" required = "required">
+                            <input type = "text" class = "form-control" id = "lotNumber" name = "lotNumber" oninput="this.value = this.value.toUpperCase()" required = "required">
                         </div>
                     </div>
 
                     <div class = "form-group row myFields" id = "exp_date">
                         <label for  = "expiryDate" class="col-sm-2 col-form-label myLabels">EXPIRY DATE: </label>
                         <div class = "col-10">
-                            <input type = "text" class = "form-control" id = "expiryDate" name = "expiryDate" required = "required">
+                            <input type = "text" class = "form-control" id = "expiryDate" name = "expiryDate" oninput="this.value = this.value.toUpperCase()" required = "required">
                         </div>
                     </div>
 
                     <div class = "form-group row myFields" id = "batch_num">
                         <label for  = "batchNumber" class="col-sm-2 col-form-label myLabels">BATCH #: </label>
                         <div class = "col-10">
-                            <input type = "text" class = "form-control"id = "batchNumber" name = "batchNumber" >
+                            <input type = "text" class = "form-control"id = "batchNumber" name = "batchNumber" oninput="this.value = this.value.toUpperCase()">
                         </div>
                     </div>
 
                     <div class = "container" id = "buttonContainer">
-                        <button type = "submit" name = "createBtn" class="btn btn-success example-screen myBtn">CREATE &amp; STORE</button>
+                        <button type = "submit" name = "createBtn" class="btn btn-success example-screen myBtn">CREATE</button>
                         <button type = "submit" name = "searchBtn" class="btn btn-warning example-screen myBtn">SEARCH</button>
                         <button class="btn btn-primary example-screen myBtn" onclick="clearFields();">CLEAR</button>
                     </div>
@@ -161,7 +161,7 @@
                     
                     /*
                     //----------------------------------------------------------------------------------------------------------------------------------------
-                    //              SEARCH FUNCTION
+                    //              CREATE FUNCTION
                     //----------------------------------------------------------------------------------------------------------------------------------------
                     */
                         
@@ -174,7 +174,7 @@
                         }
                         else
                         {
-                            $mysqli = new mysqli('127.0.0.1','root','','test');
+                            $mysqli = new mysqli('localhost','aossmed','aoss123!','barcodes');
                             if ($mysqli->connect_error)
                             {
                                 die('Could not connect to database!');
@@ -182,7 +182,7 @@
 
 
 
-                            $statement = $mysqli->prepare("INSERT INTO barcodetest VALUES (?, ?, ?, ?, ?)");
+                            $statement = $mysqli->prepare("INSERT INTO barcodetable VALUES (?, ?, ?, ?, ?)");
 
                             $statement->bind_param('sssss',$barcode,$item,$lot,$exp,$batch);
 
@@ -196,7 +196,7 @@
                                 echo '<script>';
                                 echo 'printLabelSuccess()';
                                 echo '</script>';
-                                echo '<img width="150" height = "150" src="qrCode.php?item1='.$item.'&lot1='.$lot.'&exp1='.$exp.'&batch1='.$batch.'"/>'; 
+                                echo '<img width="150" height = "150" src="qrcode.php?item1='.$item.'&lot1='.$lot.'&exp1='.$exp.'&batch1='.$batch.'"/>'; 
                                 echo "</br>";
                                 echo "</br>";
                                 echo "<div id = 'qrInfoDiv'>";
@@ -209,7 +209,7 @@
                                     echo "Batch #: ".$batch."</br>";
                                 }
                                 echo "</div>";
-                                echo "<input type='submit' class = 'btn btn-primary example-screen' id = 'myExitBtn' name='submit' value='PRINT' onclick = 'window.print()'>";
+                                echo "<input type='submit' class = 'btn btn-primary example-screen myBtn' id = 'myExitBtn' name='submit' value='PRINT' onclick = 'window.print()'>";
                                 
 
                             }
@@ -237,7 +237,7 @@
                         }
                         else
                         {
-                            $mysqli = new mysqli('127.0.0.1','root','','test');
+                            $mysqli = new mysqli('localhost','aossmed','aoss123!','barcodes');
                             if ($mysqli->connect_error)
                             {
                                 die('Could not connect to database!');
@@ -245,11 +245,13 @@
 
 
 
-                            $statement = $mysqli->prepare("SELECT itemno,lotno,expdate,batchno FROM barcodetest WHERE barcode=?");
+                            $statement = $mysqli->prepare("SELECT itemno,lotno,expdate,batchno FROM barcodetable WHERE barcode=?");
 
                             $statement->bind_param('s',$barcode);
 
                             $success = $statement->execute();
+                            
+                            $statement->bind_result($dbItemno,$dbLotno,$dbExpdate,$dbBatchno);
 
                             $row = $statement->fetch();
                             
@@ -260,17 +262,17 @@
                                 echo '<script>';
                                 echo 'printSearchSuccess()';
                                 echo '</script>';
-                                echo '<img width="150" height = "150" src="qrCode.php?item1='.$item.'&lot1='.$lot.'&exp1='.$exp.'&batch1='.$batch.'"/>'; 
+                                echo '<img width="150" height = "150" src="qrcode.php?item1='.$dbItemno.'&lot1='.$dbLotno.'&exp1='.$dbExpdate.'&batch1='.$dbBatchno.'"/>'; 
                                 echo "</br>";
                                 echo "</br>";
                                 echo "<div id = 'qrInfoDiv'>";
-                                echo "Item #: ".$item."</br>";
-                                echo "Lot #: ".$lot."</br>";
-                                echo "Expiry Date: ".$exp."</br>";
+                                echo "Item #: ".$dbItemno."</br>";
+                                echo "Lot #: ".$dbLotno."</br>";
+                                echo "Expiry Date: ".$dbExpdate."</br>";
                                 
                                 if(!($batch == ''))
                                 {
-                                    echo "Batch #: ".$batch."</br>";
+                                    echo "Batch #: ".$dbBatchno."</br>";
                                 }
                                 echo "</div>";
                                 echo "<input type='submit' class = 'btn btn-primary example-screen' id = 'myExitBtn' name='submit' value='PRINT' onclick = 'window.print()'>";
@@ -293,17 +295,10 @@
             </div>
             
         </div>
-        <div id = "exitContainer">
-                   <button type = "submit" class="btn btn-danger example-screen myBtn" onclick="self.close()">EXIT</button>
-        </div> 
         
         
     </body>
     
-     <footer>
-         
-        <nav class="navbar navbar-expand-lg navbar-light">
-            <h1 id = "pageHeading" class = "display-3 col col-sm-12"></h1>
-        </nav>
+     <footer id = "myFooter">
     </footer>
 </html>
