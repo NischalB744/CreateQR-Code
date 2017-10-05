@@ -17,7 +17,107 @@
         
         <script type="text/javascript">
         
-        
+            
+            document.addEventListener("DOMContentLoaded", function(event) { 
+ 
+            var minYear = new Date().getFullYear(),
+                maxYear = minYear + 50,
+                selectYear = document.getElementById("expiryYear"),
+                minMonth = 1,
+                maxMonth = 12,
+                selectMonth = document.getElementById("expiryMonth"),
+                minDate = 1,
+                maxDate = 31,
+                selectDate = document.getElementById("expiryDate");
+            
+                for(var a = minYear; a<=maxYear; a++){
+                    
+                    var optYear = document.createElement("option");
+                    optYear.value = a;
+                    optYear.innerHTML = a;
+                    selectYear.appendChild(optYear);
+                    
+                }
+                
+                for(var i = minMonth; i<=maxMonth; i++)
+                    {
+                        var optMonth = document.createElement("option");
+                        if(i === 1){
+                                optMonth.value = ("0" + i).slice(-2);
+                                optMonth.innerHTML = "01    -    January"; 
+                            }
+                        else if(i === 2){
+                                optMonth.value = ("0" + i).slice(-2);
+                                optMonth.innerHTML = "02    -    February";
+                            }
+                        else if(i === 3){
+                                optMonth.value = ("0" + i).slice(-2);;
+                                optMonth.innerHTML = "03    -    March";
+                            }
+                        else if(i === 4){
+                                optMonth.value = ("0" + i).slice(-2);
+                                optMonth.innerHTML = "04    -    April";
+                            }
+                        else if(i === 5){
+                                optMonth.value = ("0" + i).slice(-2);
+                                optMonth.innerHTML = "05    -    May";
+                            }
+                        else if(i === 6) {
+                                optMonth.value = ("0" + i).slice(-2);
+                                optMonth.innerHTML = "06    -    June";
+                            }
+                        else if(i === 7){
+                                optMonth.value = ("0" + i).slice(-2);
+                                optMonth.innerHTML = "07    -    July";
+                            }
+                        else if(i === 8){
+                                optMonth.value = ("0" + i).slice(-2);
+                                optMonth.innerHTML = "08    -    August";
+                            }
+                        else if(i === 9){
+                                optMonth.value = ("0" + i).slice(-2);
+                                optMonth.innerHTML = "09    -    September";
+                            }
+                        else if(i === 10){
+                                optMonth.value = ("0" + i).slice(-2);
+                                optMonth.innerHTML = "10    -    October";
+                            }
+                        else if(i === 11){
+                                optMonth.value = ("0" + i).slice(-2);
+                                optMonth.innerHTML = "11    -    November";
+                            }
+                        else if(i === 12){
+                                optMonth.value = ("0" + i).slice(-2);
+                                optMonth.innerHTML = "12    -    December";
+                            }
+                        
+                                selectMonth.appendChild(optMonth);
+                    }
+                
+                
+                    for(var a = minDate; a<=maxDate; a++){
+
+                        var optDate = document.createElement("option");
+                        if(a >=0 && a <10)
+                            {
+                                optDate.value = ("0" + a).slice(-2);
+                                optDate.innerHTML = ("0" +a).slice(-2);
+                            }
+                        else
+                        {
+                            optDate.value = a;
+                            optDate.innerHTML = a;
+                        }
+                        
+                        
+                        selectDate.appendChild(optDate);
+
+                    }
+                selectDate.value ="";
+
+        });
+
+            
             function printSearchSuccess()
             {
                 document.getElementById("databaseLabel").innerHTML = "";
@@ -83,6 +183,16 @@
                 
             }
             
+            function checkLength()
+            {
+                var myYear = document.getElementById("expiryYear");
+                if(myYear.value.length != 4)
+                    {
+                        myYear.setAttribute("data-toggle", "popver");
+                        myYear.setAttribute("data-trigger", "hover");
+                        myYear.setAttribute("data-content", "Please Enter the year in YYYY Format."); 
+                    }
+            }
            
         
         </script>
@@ -120,13 +230,27 @@
                             <input type = "text" class = "form-control" id = "lotNumber" name = "lotNumber" oninput="this.value = this.value.toUpperCase()" required = "required">
                         </div>
                     </div>
+                    
+                    <fieldset>
+                        <legend >EXPIRY DATE:</legend>
+                        <div class = "form-group row myFields" id = "exp_date">
 
-                    <div class = "form-group row myFields" id = "exp_date">
-                        <label for  = "expiryDate" class="col-sm-2 col-form-label myLabels">EXPIRY DATE: </label>
-                        <div class = "col-10">
-                            <input type = "text" class = "form-control" id = "expiryDate" name = "expiryDate" oninput="this.value = this.value.toUpperCase()" required = "required">
+                            <label for  = "expiryYear" class="col-sm-2 col-form-label myLabels">YEAR</label>
+                            <div class = "col-10">
+                                <select class = "form-control" id = "expiryYear" name = "expiryYear" required = "required"></select>
+                            </div>
+                            <label for  = "expiryMonth" class="col-sm-2 col-form-label myLabels">MONTH</label>
+                            <div class = "col-10">
+                                <select class = "form-control" id = "expiryMonth" name = "expiryMonth" required = "required"></select>
+                            </div>
+                            <label for  = "expiryDate" class="col-sm-2 col-form-label myLabels">DATE</label>
+                            <div class = "col-10">
+                                <select class = "form-control" id = "expiryDate" name = "expiryDate" ></select>
+                            </div>
+                            
+                            
                         </div>
-                    </div>
+                    </fieldset>
 
                     <div class = "form-group row myFields" id = "batch_num">
                         <label for  = "batchNumber" class="col-sm-2 col-form-label myLabels">BATCH #: </label>
@@ -152,10 +276,18 @@
                         
                         
                         error_reporting(0);
-
+                        if($_POST['expiryDate'] == '')
+                        {
+                            $exp = $_POST['expiryMonth'].'/'.$_POST['expiryYear'];
+                        }
+                        
+                        else
+                        {
+                            $exp = $_POST['expiryMonth'].'/'.$_POST['expiryDate'].'/'.$_POST['expiryYear'];
+                        }
+                        
                         $item = $_POST['itemNumber'];
                         $lot = $_POST['lotNumber'];
-                        $exp = $_POST['expiryDate'];
                         $batch = $_POST['batchNumber'];
                         $barcode = $item.",".$lot.",".$exp.",".$batch;
                     
@@ -174,7 +306,7 @@
                         }
                         else
                         {
-                            $mysqli = new mysqli('localhost','aossmed','aoss123!','barcodes');
+                            $mysqli = new mysqli('127.0.0.1','root','','test');
                             if ($mysqli->connect_error)
                             {
                                 die('Could not connect to database!');
@@ -182,7 +314,7 @@
 
 
 
-                            $statement = $mysqli->prepare("INSERT INTO barcodetable VALUES (?, ?, ?, ?, ?)");
+                            $statement = $mysqli->prepare("INSERT INTO barcodetest VALUES (?, ?, ?, ?, ?)");
 
                             $statement->bind_param('sssss',$barcode,$item,$lot,$exp,$batch);
 
@@ -237,7 +369,7 @@
                         }
                         else
                         {
-                            $mysqli = new mysqli('localhost','aossmed','aoss123!','barcodes');
+                            $mysqli = new mysqli('127.0.0.1','root','','test');
                             if ($mysqli->connect_error)
                             {
                                 die('Could not connect to database!');
@@ -245,7 +377,7 @@
 
 
 
-                            $statement = $mysqli->prepare("SELECT itemno,lotno,expdate,batchno FROM barcodetable WHERE barcode=?");
+                            $statement = $mysqli->prepare("SELECT itemno,lotno,expdate,batchno FROM barcodetest WHERE barcode=?");
 
                             $statement->bind_param('s',$barcode);
 
